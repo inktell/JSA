@@ -2,64 +2,90 @@ document.querySelector('form').addEventListener('submit', function (e) {
     // 1. Ngăn chặn form tải lại trang
     e.preventDefault();
 
-    // 2. Lấy giá trị từ các ô input (Đã sửa ID cho khớp với HTML)
-    const userInput = document.getElementById('name').value;
-    const emailInput = document.getElementById('email').value;
-    const phoneInput = document.getElementById('phone').value;
+    // 2. Lấy giá trị từ các ô input
+    const userInput = document.getElementById('name').value.trim();
+    const emailInput = document.getElementById('email').value.trim();
+    const phoneInput = document.getElementById('phone').value.trim(); 
     const passwordInput = document.getElementById('password').value;
     const confirmPasswordInput = document.getElementById('confirmPassword').value;
 
+    // Đối tượng kiểm tra logic (Validation)
     const validationProvider = {
-        // Kiểm tra Email: định dạng chuẩn abc@domain.com
         isEmail: (email) => {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         },
-
-        // Kiểm tra Số điện thoại
-        isPhoneNumber: (phone) => {
-            return /(0[3|5|7|8|9])+([0-9]{8})\b/.test(phone);
-        },
-
-        // Kiểm tra Password
         isStrongPassword: (password) => {
-            // Giải thích Regex password:
-            // (?=.*[a-z]) : Ít nhất 1 chữ thường
-            // (?=.*[A-Z]) : Ít nhất 1 chữ hoa
-            // (?=.*\d)     : Ít nhất 1 số
-            // (?=.*[@$!%*?&]) : Ít nhất 1 ký tự đặc biệt
-            // .{9,}        : Trên 8 ký tự (tức là từ 9 trở lên)
-            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{9,}$/;
+            // Ít nhất 6 ký tự, 1 hoa, 1 thường, 1 số, 1 ký tự đặc biệt
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
             return regex.test(password);
         },
-        doPasswordsMatch: function (password, confirmPassword) {
+        doPasswordsMatch: (password, confirmPassword) => {
             return password === confirmPassword;
         }
     };
-    // 3. Validation dữ liệu
-    if (!validationProvider.isEmail(emailInput)) {
-        alert("Email không hợp lệ. Vui lòng nhập đúng định dạng");
-        return;
-    }
-    if (!validationProvider.isPhoneNumber(phoneInput)) {
-        alert("Số điện thoại không hợp lệ. Vui lòng nhập đúng định dạng");
-        return;
-    }
-    if (!validationProvider.isStrongPassword(passwordInput)) {
-        alert("Mật khẩu yếu. Vui lòng sử dụng mật khẩu mạnh hơn (ít nhất 9 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt).");
-        return;
-    }
-    if (!validationProvider.doPasswordsMatch(passwordInput, confirmPasswordInput)) {
-        alert("Mật khẩu xác nhận không khớp.");
-        return;
-    }
-    // 4. Lưu dữ liệu đăng ký vào localStorage
-    localStorage.setItem("db_name", userInput);
-    localStorage.setItem("db_email", emailInput);
-    localStorage.setItem("db_phone", phoneInput);
-    localStorage.setItem("db_pass", passwordInput);
-    localStorage.setItem("db_username", userInput); // Lưu tên người dùng để hiển thị sau khi đăng nhập
 
-    alert("Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.");
-    // 5. Chuyển hướng sang trang Đăng Nhập
-    window.location.href = "login.html";
+    // 3. THỰC HIỆN KIỂM TRA (VALIDATION)
+
+    // Kiểm tra Tên
+    if (userInput === "") {
+        alert("Vui lòng nhập họ tên!");
+        return;
+    }
+
+    // Kiểm tra Email
+    if (!validationProvider.isEmail(emailInput)) {
+        alert("Email không đúng định dạng!");
+        return;
+    }
+
+    // KIỂM TRA SỐ ĐIỆN THOẠI (Rỗng cũng được, nếu nhập thì phải 10-14 số)
+    if (phoneInput !== "") {
+        if (phoneInput.length < 10 || phoneInput.length >= 15 || !/^\d+$/.test(phoneInput)) {
+            alert("Số điện thoại không hợp lệ. Vui lòng nhập từ 10 đến 14 chữ số.");
+            return;
+        }
+    }
+
+    // Kiểm tra Mật khẩu mạnh
+    if (!validationProvider.isStrongPassword(passwordInput)) {
+        alert("Mật khẩu yếu! Cần ít nhất 9 ký tự, gồm chữ HOA, chữ thường, số và ký tự đặc biệt.");
+        return;
+    }
+
+    // Kiểm tra khớp mật khẩu
+    if (!validationProvider.doPasswordsMatch(passwordInput, confirmPasswordInput)) {
+        alert("Xác nhận mật khẩu không khớp!");
+        return;
+    }
+
+    // 4. LƯU DỮ LIỆU VÀO LOCALSTORAGE
+    try {
+        localStorage.setItem("db_name", userInput);
+        localStorage.setItem("db_email", emailInput);
+        localStorage.setItem("db_phone", phoneInput);
+        localStorage.setItem("db_pass", passwordInput);
+        localStorage.setItem("db_username", userInput); // Dùng để hiển thị ở Navbar index
+
+        alert("Đăng kí thành công!");
+
+        // 5. CHUYỂN HƯỚNG
+        window.location.href = "login.html";
+    } catch (error) {
+        alert("Lỗi lưu trữ dữ liệu. Hãy đảm bảo trình duyệt của bạn cho phép Cookie/LocalStorage.");
+    }
 });
+
+function togglePassword(inputId, element) {
+    const passwordInput = document.getElementById(inputId);
+    const icon = element.querySelector('i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}

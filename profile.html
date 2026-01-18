@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Cá Nhân - ShopInk</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            padding: 2rem 1rem;
+        }
+
+        .profile-sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .profile-avatar {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .profile-sidebar h5 {
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+
+        .profile-sidebar p {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .profile-menu li {
+            margin: 0.5rem 0;
+        }
+
+        .profile-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .profile-menu a:hover {
+            background: #f0f0f0;
+            color: #667eea;
+        }
+
+        .profile-menu a.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .profile-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .info-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-group.full {
+            grid-template-columns: 1fr;
+        }
+
+        .info-item {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .info-item label {
+            display: block;
+            font-weight: 600;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-item p,
+        .info-item span {
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .edit-mode .info-display {
+            display: none;
+        }
+
+        .edit-mode .edit-form {
+            display: block !important;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-primary-custom {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary-custom {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-custom:hover {
+            background: #e0e0e0;
+        }
+
+        .order-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .order-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .product-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            border-top: 1px solid #eee;
+        }
+
+        .product-thumb {
+            width: 60px;
+            height: 60px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-price {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .favorite-card {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .favorite-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .favorite-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .favorite-image {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .favorite-body {
+            padding: 1rem;
+        }
+
+        .favorite-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .favorite-price {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .favorite-rating {
+            color: #ffc107;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .setting-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-label h6 {
+            margin: 0;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .setting-label p {
+            margin: 0.25rem 0 0 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #ddd;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #667eea;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            left: 27px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar navbar-expand-lg sticky-top"
+        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white fw-bold" href="index.html">
+                <i class="fas fa-shopping-bag me-2"></i>ShopInk
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="mx-auto" style="max-width: 400px; width: 100%;">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm...">
+                        <button class="btn btn-light" type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <ul class="navbar-nav ms-auto gap-3">
+                    <li class="nav-item"><a class="nav-link text-white" href="index.html">Trang Chủ</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="cart.html"><i
+                                class="fas fa-shopping-cart me-1"></i>Giỏ Hàng</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="profile.html"><i
+                                class="fas fa-user me-1"></i>Thông Tin</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="profile-header">
+        <div class="container">
+            <h2><i class="fas fa-user-circle me-2"></i>Thông Tin Cá Nhân</h2>
+        </div>
+    </div>
+
+    <div class="profile-container">
+        <div class="profile-sidebar">
+            <div class="profile-avatar">
+                <div class="avatar-image">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h5>Nguyễn Văn A</h5>
+                <p>@nguyenvana</p>
+            </div>
+            <ul class="profile-menu">
+                <li><a class="menu-link active" onclick="switchTab('profile')"><i class="fas fa-id-card me-2"></i>Thông
+                        Tin Cá Nhân</a></li>
+                <li><a class="menu-link" onclick="switchTab('orders')"><i class="fas fa-shopping-bag me-2"></i>Lịch Sử
+                        Mua Hàng</a></li>
+                <li><a class="menu-link" onclick="switchTab('favorites')"><i class="fas fa-heart me-2"></i>Yêu Thích</a>
+                </li>
+                <li><a class="menu-link" onclick="switchTab('settings')"><i class="fas fa-cog me-2"></i>Cài Đặt</a></li>
+            </ul>
+        </div>
+
+        <div class="profile-content">
+            <div id="profile" class="content-section active">
+                <div class="section-title">Thông Tin Cá Nhân</div>
+                <div class="info-display">
+                    <div class="info-group">
+                        <div class="info-item"><label>Họ Tên</label><span id="info-name">Đang tải...</span></div>
+                        <div class="info-item"><label>Email</label><span id="info-email">Đang tải...</span></div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-item"><label>Số Điện Thoại</label><span id="info-phone">Chưa cập nhật</span>
+                        </div>
+                        <div class="info-item"><label>Giới Tính</label><span>Nam</span></div>
+                    </div>
+                    <div class="info-group full">
+                        <div class="info-item"><label>Địa Chỉ</label><span>Chưa xác định</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn-primary-custom" onclick="toggleEdit()">Chỉnh Sửa Thông Tin</button>
+                    </div>
+                </div>
+
+                <div class="edit-form" style="display: none;">
+                    <div class="form-group"><label>Họ Tên</label><input type="text" id="edit-name"></div>
+                    <div class="form-group"><label>Số Điện Thoại</label><input type="tel" id="edit-phone"></div>
+                    <div class="button-group">
+                        <button class="btn-primary-custom" onclick="saveProfile()">Lưu Thay Đổi</button>
+                        <button class="btn-secondary-custom" onclick="cancelEdit()">Hủy</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="orders" class="content-section">
+                <div class="section-title">Lịch Sử Mua Hàng</div>
+                <div id="order-list">
+                    <div class="text-center py-5">
+                        <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">Bạn chưa có đơn hàng nào.</p>
+                        <a href="index.html" class="btn btn-outline-primary btn-sm">Mua sắm ngay</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="favorites" class="content-section">
+                <div class="section-title">Sản Phẩm Yêu Thích</div>
+                <div id="favorite-list">
+                    <div class="text-center py-5">
+                        <i class="fas fa-heart-broken fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">Danh sách yêu thích của bạn đang trống.</p>
+                        <a href="index.html" class="btn btn-outline-primary btn-sm">Khám phá sản phẩm</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settings" class="content-section">
+                <div class="section-title">Cài Đặt Tài Khoản</div>
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <h6>Thông Báo Email</h6>
+                        <p>Nhận thông báo qua email về đơn hàng và khuyến mãi</p>
+                    </div>
+                    <div class="toggle-switch active"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <h6>Đổi mật khẩu</h6>
+                        <p>Thay đổi mật khẩu để bảo mật tài khoản</p>
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm">Thay đổi</button>
+                </div>
+                <div class="button-group mt-4">
+                    <button class="btn-secondary-custom" onclick="logout()">Đăng Xuất</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="orders" class="content-section">
+            <div class="section-title">Lịch Sử Mua Hàng</div>
+            <div id="order-list">
+                <div class="text-center py-5">
+                    <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Bạn chưa có đơn hàng nào.</p>
+                    <a href="index.html" class="btn btn-outline-primary btn-sm">Mua sắm ngay</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="favorites" class="content-section">
+            <div class="section-title">Sản Phẩm Yêu Thích</div>
+            <div id="favorite-list">
+                <div class="text-center py-5">
+                    <i class="fas fa-heart-broken fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Danh sách yêu thích của bạn đang trống.</p>
+                    <a href="index.html" class="btn btn-outline-primary btn-sm">Khám phá sản phẩm</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings" class="content-section">
+            <div class="section-title">Cài Đặt Tài Khoản</div>
+            <div class="setting-item">
+                <div class="setting-label">
+                    <h6>Thông Báo Email</h6>
+                    <p>Nhận thông báo qua email về đơn hàng và khuyến mãi</p>
+                </div>
+                <div class="toggle-switch active"></div>
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">
+                    <h6>Bảo Mật</h6>
+                    <p>Quản lý mật khẩu và quyền truy cập</p>
+                </div>
+            </div>
+            <div class="button-group mt-3">
+                <button class="btn-primary-custom">Đổi Mật Khẩu</button>
+                <button class="btn-secondary-custom">Đăng Xuất</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-3">Về ShopInk</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li>Giới Thiệu</li>
+                        <li>Tuyển Dụng</li>
+                        <li>Blog</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-3">Hỗ Trợ</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li>Trung Tâm Trợ Giúp</li>
+                        <li>Liên Hệ</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-3">Theo Dõi</h5>
+                    <div class="d-flex gap-3 fs-4 text-white-50">
+                        <i class="fab fa-facebook"></i><i class="fab fa-instagram"></i><i class="fab fa-tiktok"></i>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-3">Đăng Ký Nhận Tin</h5>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Email...">
+                        <button class="btn btn-primary">Gửi</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <p class="text-center text-white-50 mb-0">&copy; 2024 shopInk. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.closest('.menu-link').classList.add('active');
+        }
+        function toggleEdit() { document.querySelector('#profile').classList.toggle('edit-mode'); }
+        function saveProfile() { alert('Đã lưu!'); toggleEdit(); }
+        function cancelEdit() { document.querySelector('#profile').classList.remove('edit-mode'); }
+    </script>
+    <script src="scripts/profile.js"></script>
+</body>
+
+</html>
