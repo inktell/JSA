@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopInk - Nơi Mua Sắm Trực Tuyến Hàng Đầu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="bi bi-shop"></i> ShopInk
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="input-group mx-auto" style="max-width: 400px;">
+                    <input type="text" class="form-control rounded-start" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+                    <button class="btn btn-primary rounded-end" type="button" id="searchBtn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Trang Chủ</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button" data-bs-toggle="dropdown">
+                            Danh Mục
+                        </a>
+                        <ul class="dropdown-menu" id="categoryMenu">
+                            <li><a class="dropdown-item" href="#" onclick="filterByCategory('all')">Tất Cả</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByCategory('electronics')">Điện Tử</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByCategory('fashion')">Thời Trang</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByCategory('home')">Gia Dụng</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByCategory('books')">Sách</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-cart"></i> Giỏ Hàng <span class="badge bg-danger" id="cartCount">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html" id="loginLink">
+                            <i class="bi bi-person"></i> Đăng Nhập
+                        </a>
+                    </li>
+                    <li class="nav-item" id="userMenu" style="display:none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span id="userName"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.html">Thông Tin Cá Nhân</a></li>
+                            <li><a class="dropdown-item" href="orders.html">Đơn Hàng Của Tôi</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">Đăng Xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner text-white text-center py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">Khám Phá Thế Giới Mua Sắm</h1>
+            <p class="lead mb-4">Hàng triệu sản phẩm chất lượng cao, giá tốt nhất</p>
+            <div class="input-group" style="max-width: 500px; margin: 0 auto;">
+                <input type="text" class="form-control form-control-lg" placeholder="Tìm kiếm sản phẩm yêu thích...">
+                <button class="btn btn-light btn-lg" type="button">
+                    <i class="bi bi-search"></i> Tìm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter and Sort Section -->
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Bộ Lọc</h5>
+                        
+                        <!-- Price Range Filter -->
+                        <div class="mb-4">
+                            <label class="form-label">Khoảng Giá</label>
+                            <input type="range" class="form-range" id="priceRange" min="0" max="50000000" value="50000000">
+                            <div class="d-flex justify-content-between mt-2">
+                                <span>0 đ</span>
+                                <span id="priceValue">50,000,000 đ</span>
+                            </div>
+                        </div>
+
+                        <!-- Rating Filter -->
+                        <div class="mb-4">
+                            <label class="form-label">Đánh Giá</label>
+                            <div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="5" id="rating5" onchange="filterByRating()">
+                                    <label class="form-check-label" for="rating5">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i> 5 Sao
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="4" id="rating4" onchange="filterByRating()">
+                                    <label class="form-check-label" for="rating4">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i> 4 Sao trở lên
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="3" id="rating3" onchange="filterByRating()">
+                                    <label class="form-check-label" for="rating3">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i> 3 Sao trở lên
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div>
+                            <label class="form-label">Danh Mục</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="cat-all" checked onchange="filterByCategory('all')">
+                                <label class="form-check-label" for="cat-all">Tất Cả</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="cat-electronics" onchange="filterByCategory('electronics')">
+                                <label class="form-check-label" for="cat-electronics">Điện Tử</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="cat-fashion" onchange="filterByCategory('fashion')">
+                                <label class="form-check-label" for="cat-fashion">Thời Trang</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="cat-home" onchange="filterByCategory('home')">
+                                <label class="form-check-label" for="cat-home">Gia Dụng</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="cat-books" onchange="filterByCategory('books')">
+                                <label class="form-check-label" for="cat-books">Sách</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="col-md-9">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h5>Sản Phẩm <span id="productCount">0</span> kết quả</h5>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <select class="form-select d-inline-block" style="width: auto;" onchange="sortProducts(this.value)">
+                            <option value="popular">Phổ Biến</option>
+                            <option value="newest">Mới Nhất</option>
+                            <option value="price-low">Giá: Thấp Đến Cao</option>
+                            <option value="price-high">Giá: Cao Đến Thấp</option>
+                            <option value="rating">Đánh Giá Cao Nhất</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row" id="productsList">
+                    <!-- Products will be loaded here by JavaScript -->
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- Pagination will be generated by JavaScript -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chi Tiết Sản Phẩm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <img id="productImage" src="" alt="Product" class="img-fluid rounded">
+                        </div>
+                        <div class="col-md-7">
+                            <h4 id="productName"></h4>
+                            <div class="mb-3">
+                                <span id="productRating"></span>
+                                <span id="productReviews" class="text-muted ms-2"></span>
+                            </div>
+                            <h3 class="text-danger mb-3">
+                                <span id="productPrice"></span> đ
+                            </h3>
+                            <p id="productDescription"></p>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Số Lượng:</label>
+                                <div class="input-group" style="width: 120px;">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="decreaseQty()">-</button>
+                                    <input type="number" class="form-control text-center" id="productQty" value="1" min="1">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="increaseQty()">+</button>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary btn-lg w-100 mb-2" onclick="addToCart()">
+                                <i class="bi bi-cart-plus"></i> Thêm Vào Giỏ Hàng
+                            </button>
+                            <button class="btn btn-outline-primary btn-lg w-100" onclick="buyNow()">
+                                <i class="bi bi-lightning-charge"></i> Mua Ngay
+                            </button>
+
+                            <!-- Reviews Section -->
+                            <div class="mt-4">
+                                <h6>Đánh Giá Sản Phẩm</h6>
+                                <div id="reviewsList" class="mt-3" style="max-height: 300px; overflow-y: auto;">
+                                    <!-- Reviews will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5>Về ShopHub</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50 text-decoration-none">Giới Thiệu</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Tuyển Dụng</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Hỗ Trợ Khách Hàng</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50 text-decoration-none">Trung Tâm Trợ Giúp</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Liên Hệ Chúng Tôi</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Điều Khoản Sử Dụng</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Theo Dõi Chúng Tôi</h5>
+                    <a href="#" class="text-white-50 me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white-50 me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-white-50 me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white-50"><i class="bi bi-youtube"></i></a>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Đăng Ký Nhận Tin</h5>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Email của bạn">
+                        <button class="btn btn-primary" type="button">Đăng Ký</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-white-50">
+            <div class="text-center">
+                <p class="text-white-50">&copy; 2024 ShopHub. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

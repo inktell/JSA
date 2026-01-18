@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng - ShopHub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .cart-container {
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .cart-header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .cart-item-shop {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .qty-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .qty-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .cart-item-total {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #667eea;
+            min-width: 120px;
+            text-align: right;
+        }
+
+        .cart-item-remove {
+            margin-left: auto;
+        }
+
+        .btn-remove {
+            background: #ffe5e5;
+            color: #d32f2f;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-remove:hover {
+            background: #ffcccc;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .empty-cart i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .empty-cart p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .summary-row:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .summary-row.total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #667eea;
+            border-top: 2px solid #667eea;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .summary-label {
+            color: #666;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .btn-checkout {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        .btn-continue {
+            color: #667eea;
+            border: 1px solid #667eea;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-continue:hover {
+            background: #f0f4ff;
+        }
+
+        .promo-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .promo-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .promo-input input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+        }
+
+        .promo-input button {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .promo-input button:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-shopping-bag"></i> ShopHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Trang Chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i> Giỏ Hàng
+                        </a>
+                    </li>
+                    <li class="nav-item" id="userMenuCart">
+                        <a class="nav-link" href="login.html">
+                            <i class="fas fa-user"></i> Đăng Nhập
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Header -->
+    <div class="cart-header">
+        <div class="container">
+            <h2><i class="fas fa-shopping-bag"></i> Giỏ Hàng Của Bạn</h2>
+        </div>
+    </div>
+
+    <!-- Cart Content -->
+    <div class="cart-container">
+        <div class="container">
+            <div class="row">
+                <!-- Cart Items -->
+                <div class="col-lg-8">
+                    <div id="cartItems">
+                        <!-- Items will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="col-lg-4">
+                    <!-- Promo Code -->
+                    <div class="promo-section">
+                        <h5 class="mb-3">Mã Khuyến Mãi</h5>
+                        <div class="promo-input">
+                            <input type="text" id="promoCode" placeholder="Nhập mã khuyến mãi...">
+                            <button onclick="applyPromo()">Áp Dụng</button>
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="cart-summary">
+                        <h5 class="mb-3">Tóm Tắt Đơn Hàng</h5>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Tạm Tính:</span>
+                            <span class="summary-value" id="subtotal">0 đ</span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Phí Vận Chuyển:</span>
+                            <span class="summary-value" id="shipping">0 đ</span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Giảm Giá:</span>
+                            <span class="summary-value text-danger" id="discount">- 0 đ</span>
+                        </div>
+
+                        <div class="summary-row total">
+                            <span>Tổng Cộng:</span>
+                            <span id="total">0 đ</span>
+                        </div>
+
+                        <button class="btn-checkout" onclick="checkout()">Thanh Toán</button>
+                        <a href="index.html" class="btn-continue mt-3">Tiếp Tục Mua Sắm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Về ShopHub</h5>
+                    <p class="text-white-50">Nền tảng mua sắm trực tuyến hàng đầu, mang đến hàng triệu sản phẩm chất lượng cao với giá tốt nhất.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <h5>Liên Hệ</h5>
+                    <p class="text-white-50">
+                        Email: support@shophub.com<br>
+                        Hotline: 1900 XXXX
+                    </p>
+                </div>
+            </div>
+            <hr class="bg-white-50">
+            <div class="text-center">
+                <p class="text-white-50">&copy; 2024 ShopHub. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
