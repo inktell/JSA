@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="styles/styles.css">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
@@ -20,7 +22,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="input-group mx-auto" style="max-width: 400px;">
-                    <input type="text" class="form-control rounded-start" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+                    <input type="text" class="form-control rounded-start" id="searchInput"
+                        placeholder="Tìm kiếm sản phẩm...">
                     <button class="btn btn-primary rounded-end" type="button" id="searchBtn">
                         <i class="bi bi-search"></i>
                     </button>
@@ -30,13 +33,16 @@
                         <a class="nav-link" href="index.html">Trang Chủ</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button"
+                            data-bs-toggle="dropdown">
                             Danh Mục
                         </a>
                         <ul class="dropdown-menu" id="categoryMenu">
                             <li><a class="dropdown-item" href="#" onclick="filterByCategory('all')">Tất Cả</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="filterByCategory('electronics')">Điện Tử</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="filterByCategory('fashion')">Thời Trang</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByCategory('electronics')">Điện Tử</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByCategory('fashion')">Thời Trang</a>
+                            </li>
                             <li><a class="dropdown-item" href="#" onclick="filterByCategory('home')">Gia Dụng</a></li>
                             <li><a class="dropdown-item" href="#" onclick="filterByCategory('books')">Sách</a></li>
                         </ul>
@@ -58,7 +64,9 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.html">Thông Tin Cá Nhân</a></li>
                             <li><a class="dropdown-item" href="orders.html">Đơn Hàng Của Tôi</a></li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li><a class="dropdown-item" href="#" onclick="logout()">Đăng Xuất</a></li>
                         </ul>
                     </li>
@@ -68,7 +76,8 @@
     </nav>
 
     <!-- Hero Banner -->
-    <div class="hero-banner text-white text-center py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="hero-banner text-white text-center py-5"
+        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
         <div class="container">
             <h1 class="display-4 fw-bold mb-3">Khám Phá Thế Giới Mua Sắm</h1>
             <p class="lead mb-4">Hàng triệu sản phẩm chất lượng cao, giá tốt nhất</p>
@@ -88,15 +97,20 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title mb-3">Bộ Lọc</h5>
-                        
+
                         <!-- Price Range Filter -->
                         <div class="mb-4">
-                            <label class="form-label">Khoảng Giá</label>
-                            <input type="range" class="form-range" id="priceRange" min="0" max="50000000" value="50000000">
-                            <div class="d-flex justify-content-between mt-2">
-                                <span>0 đ</span>
-                                <span id="priceValue">50,000,000 đ</span>
+                            <label class="form-label fw-bold">Khoảng Giá (đ)</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="number" class="form-control form-control-sm" id="priceMin" placeholder="Từ"
+                                    min="0">
+                                <span class="text-muted">-</span>
+                                <input type="number" class="form-control form-control-sm" id="priceMax"
+                                    placeholder="Đến" min="0">
                             </div>
+                            <button class="btn btn-outline-primary btn-sm w-100 mt-2" onclick="applyPriceFilter()">
+                                Áp dụng
+                            </button>
                         </div>
 
                         <!-- Rating Filter -->
@@ -104,21 +118,30 @@
                             <label class="form-label">Đánh Giá</label>
                             <div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="5" id="rating5" onchange="filterByRating()">
+                                    <input class="form-check-input" type="checkbox" value="5" id="rating5"
+                                        onchange="filterByRating()">
                                     <label class="form-check-label" for="rating5">
-                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i> 5 Sao
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star-fill"></i> 5 Sao
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="4" id="rating4" onchange="filterByRating()">
+                                    <input class="form-check-input" type="checkbox" value="4" id="rating4"
+                                        onchange="filterByRating()">
                                     <label class="form-check-label" for="rating4">
-                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i> 4 Sao trở lên
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star"></i> 4 Sao trở lên
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="3" id="rating3" onchange="filterByRating()">
+                                    <input class="form-check-input" type="checkbox" value="3" id="rating3"
+                                        onchange="filterByRating()">
                                     <label class="form-check-label" for="rating3">
-                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i> 3 Sao trở lên
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star-fill"></i><i class="bi bi-star"></i><i
+                                            class="bi bi-star"></i> 3 Sao trở lên
                                     </label>
                                 </div>
                             </div>
@@ -128,23 +151,28 @@
                         <div>
                             <label class="form-label">Danh Mục</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="cat-all" checked onchange="filterByCategory('all')">
+                                <input class="form-check-input" type="checkbox" id="cat-all" checked
+                                    onchange="filterByCategory('all')">
                                 <label class="form-check-label" for="cat-all">Tất Cả</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="cat-electronics" onchange="filterByCategory('electronics')">
+                                <input class="form-check-input" type="checkbox" id="cat-electronics"
+                                    onchange="filterByCategory('electronics')">
                                 <label class="form-check-label" for="cat-electronics">Điện Tử</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="cat-fashion" onchange="filterByCategory('fashion')">
+                                <input class="form-check-input" type="checkbox" id="cat-fashion"
+                                    onchange="filterByCategory('fashion')">
                                 <label class="form-check-label" for="cat-fashion">Thời Trang</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="cat-home" onchange="filterByCategory('home')">
+                                <input class="form-check-input" type="checkbox" id="cat-home"
+                                    onchange="filterByCategory('home')">
                                 <label class="form-check-label" for="cat-home">Gia Dụng</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="cat-books" onchange="filterByCategory('books')">
+                                <input class="form-check-input" type="checkbox" id="cat-books"
+                                    onchange="filterByCategory('books')">
                                 <label class="form-check-label" for="cat-books">Sách</label>
                             </div>
                         </div>
@@ -159,7 +187,8 @@
                         <h5>Sản Phẩm <span id="productCount">0</span> kết quả</h5>
                     </div>
                     <div class="col-md-6 text-end">
-                        <select class="form-select d-inline-block" style="width: auto;" onchange="sortProducts(this.value)">
+                        <select class="form-select d-inline-block" style="width: auto;"
+                            onchange="sortProducts(this.value)">
                             <option value="popular">Phổ Biến</option>
                             <option value="newest">Mới Nhất</option>
                             <option value="price-low">Giá: Thấp Đến Cao</option>
@@ -206,13 +235,16 @@
                                 <span id="productPrice"></span> đ
                             </h3>
                             <p id="productDescription"></p>
-                            
+
                             <div class="mb-3">
                                 <label class="form-label">Số Lượng:</label>
                                 <div class="input-group" style="width: 120px;">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="decreaseQty()">-</button>
-                                    <input type="number" class="form-control text-center" id="productQty" value="1" min="1">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="increaseQty()">+</button>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="decreaseQty()">-</button>
+                                    <input type="number" class="form-control text-center" id="productQty" value="1"
+                                        min="1">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="increaseQty()">+</button>
                                 </div>
                             </div>
 
@@ -281,5 +313,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="scripts/index.js"></script>
+    <script src="scripts/sreach.js"></script>
 </body>
+
 </html>
