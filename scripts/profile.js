@@ -26,7 +26,7 @@ function displayUserProfile() {
     if (phoneDisplay) phoneDisplay.innerText = phone || "Chưa cập nhật";
 }
 
-// Thêm vào trong profile.js
+
 document.querySelector(".btn-secondary-custom").addEventListener("click", function() {
     if(confirm("Bạn có chắc chắn muốn đăng xuất?")) {
         // Nếu muốn xóa sạch dữ liệu thì dùng: localStorage.clear();
