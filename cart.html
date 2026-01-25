@@ -272,14 +272,22 @@
                         <a class="nav-link" href="index.html">Trang Chủ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="cart.html">
-                            <i class="fas fa-shopping-cart"></i> Giỏ Hàng
+                        <a class="nav-link" href="login.html" id="loginLink">
+                            <i class="bi bi-person"></i> Đăng Nhập
                         </a>
                     </li>
-                    <li class="nav-item" id="userMenuCart">
-                        <a class="nav-link" href="login.html">
-                            <i class="fas fa-user"></i> Đăng Nhập
+                    <li class="nav-item" id="userMenu" style="display:none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span id="userName"></span>
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.html">Thông Tin Cá Nhân</a></li>
+                            <li><a class="dropdown-item" href="orders.html">Đơn Hàng Của Tôi</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">Đăng Xuất</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -371,5 +379,6 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/index.js"></script>
 </body>
 </html>
