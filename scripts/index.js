@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+console.log(localStorage.getItem("db_username"));
+
+
 // Hàm xử lý đăng xuất
 function logout() {
     if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
