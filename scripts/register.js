@@ -48,7 +48,7 @@ document.querySelector('form').addEventListener('submit', function (e) {
 
     // Kiểm tra Mật khẩu mạnh
     if (!validationProvider.isStrongPassword(passwordInput)) {
-        alert("Mật khẩu yếu! Cần ít nhất 9 ký tự, gồm chữ HOA, chữ thường, số và ký tự đặc biệt.");
+        alert("Mật khẩu yếu! Cần ít nhất 6 ký tự, gồm chữ HOA, chữ thường, số và ký tự đặc biệt.");
         return;
     }
 

@@ -32,3 +32,11 @@ function logout() {
         window.location.reload();
     }
 }
+
+// Hàm xử lý lọc giá
+function applyPriceFilter() {
+    const minPrice = document.getElementById('priceMin').value;
+    const maxPrice = document.getElementById('priceMax').value;
+    
+    console.log("Đang lọc giá từ:", minPrice, "đến:", maxPrice);
+}
