@@ -1,6 +1,6 @@
-// 1. Cấu hình lấy từ ảnh test thành công của bạn
+// 1. Cấu hình
 const CONFIG = {
-    API_KEY: 'e1dbdcb0f3msh59c061826b89031p1bf1dcjsn1fea62ce7ffe',
+    API_KEY: 'cfc266bb44mshf23a451ea830b9bp117a1ajsn66b83e4f597a',
     API_HOST: 'lazada-api.p.rapidapi.com',
     BASE_URL: 'https://lazada-api.p.rapidapi.com/lazada/search/items'
 };
@@ -20,7 +20,7 @@ async function fetchLazadaProducts(keyword = '') {
         </div>`;
 
     const url = `${CONFIG.BASE_URL}?keywords=${encodeURIComponent(keyword)}&site=vn&page=1&sort=pop`;
-    
+
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -33,7 +33,7 @@ async function fetchLazadaProducts(keyword = '') {
         const result = await response.json();
         console.log("Dữ liệu thực tế từ API:", result);
 
-        // Lấy mảng sản phẩm từ result.data.items (theo log console của bạn)
+        // Lấy mảng sản phẩm từ result.data.items
         const items = result.data?.items || [];
         renderProducts(items);
 
@@ -49,9 +49,17 @@ async function fetchLazadaProducts(keyword = '') {
 function renderProducts(products) {
     const productsList = document.getElementById('productsList');
     const productCount = document.getElementById('productCount');
-    
+    const searchKeyword = document.getElementById('searchKeyword'); 
+    const searchInput = document.getElementById('searchInput');
+
     if (productCount) productCount.innerText = products.length;
-    productsList.innerHTML = ''; 
+    
+    if (searchKeyword && searchInput) {
+        const keyword = searchInput.value.trim();
+        searchKeyword.innerText = keyword ? `cho từ khóa "${keyword}"` : "";
+    }
+
+    productsList.innerHTML = '';
 
     if (products.length === 0) {
         productsList.innerHTML = '<p class="text-center w-100">Không tìm thấy sản phẩm nào.</p>';
@@ -60,22 +68,17 @@ function renderProducts(products) {
 
     products.forEach(item => {
         const title = item.title || 'Sản phẩm Lazada';
-        
-        // Xử lý giá hiển thị
-        let displayPrice = "Liên hệ";
-        if (item.priceShow) {
-            displayPrice = item.priceShow;
-        } else if (item.price) {
-            displayPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price);
-        }
-
-        // Ưu tiên lấy ảnh từ API, nếu lỗi dùng ảnh "No Image" sạch hơn
+        let displayPrice = item.priceShow || (item.price ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) : "Liên hệ");
         const imgUrl = item.image || item.img || 'https://placehold.co/400x400?text=No+Image';
+        
+        // SỬA LỖI TẠI ĐÂY: Lấy itemId từ API Lazada
+        const itemId = item.itemId || item.item_id; 
 
         const cardHTML = `
             <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm border-0 product-card" style="border-radius: 15px; overflow: hidden;">
-                    <div style="background: #f8f9fa; padding: 10px;">
+                <div class="card h-100 shadow-sm border-0 product-card" 
+                     style="border-radius: 15px; overflow: hidden; cursor: pointer;"
+                     onclick="goToDetail('${itemId}')"> <div style="background: #f8f9fa; padding: 10px;">
                         <img src="${imgUrl}" class="card-img-top" alt="${title}" 
                              style="height: 200px; object-fit: contain;"
                              onerror="this.src='https://placehold.co/400x400?text=Hình+ảnh+lỗi'">
@@ -89,7 +92,9 @@ function renderProducts(products) {
                             <i class="bi bi-star-fill"></i> ${item.ratingScore || '5.0'}
                             <span class="text-muted">(${item.review || 0} đánh giá)</span>
                         </div>
-                        <button class="btn btn-primary mt-auto w-100" style="border-radius: 8px;" onclick="addToCart('${item.itemId}')">
+                        
+                        <button class="btn btn-primary mt-auto w-100" style="border-radius: 8px;" 
+                                onclick="event.stopPropagation(); addToCart('${itemId}')">
                             <i class="bi bi-cart-plus"></i> Thêm vào giỏ
                         </button>
                     </div>
@@ -103,7 +108,6 @@ function renderProducts(products) {
  * 4. Lắng nghe sự kiện
  */
 document.addEventListener('DOMContentLoaded', () => {
-    // Load mặc định
     fetchLazadaProducts('balo');
 
     const searchBtn = document.getElementById('searchBtn');
@@ -127,4 +131,18 @@ document.addEventListener('DOMContentLoaded', () => {
 function addToCart(id) {
     console.log("Thêm sản phẩm ID:", id);
     alert("Đã thêm vào giỏ hàng!");
+}
+
+/**
+ * 5. Chuyển hướng 
+ */
+function goToDetail(id) {
+    // Nếu id có giá trị hợp lệ mới cho chuyển trang
+    if (id && id !== 'undefined' && id !== 'null') {
+        window.location.href = `detail.html?id=${id}`;
+    } else {
+        // Thông báo lỗi thay vì chuyển trang trắng
+        alert("Không tìm thấy mã sản phẩm (ID bị trống)!");
+        console.error("Lỗi: Tham số ID bị undefined khi gọi hàm goToDetail");
+    }
 }

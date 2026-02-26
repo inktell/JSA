@@ -9,38 +9,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="styles/styles.css">
     <style>
-        /* Tinh chỉnh thêm để trang chi tiết đẹp hơn */
-        .main-img-container {
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-        .img-main {
-            width: 100%;
-            height: 500px;
-            object-fit: contain;
-        }
-        .thumb-item {
-            width: 80px;
-            height: 80px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .thumb-item:hover, .thumb-item.active {
-            border-color: var(--primary);
-        }
+        .main-img-container { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #ddd; }
+        .img-main { width: 100%; height: 500px; object-fit: contain; }
+        .thumb-item { width: 80px; height: 80px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .thumb-item:hover, .thumb-item.active { border-color: #0d6efd; }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="index.html">
-                <i class="bi bi-shop"></i> ShopInk
-            </a>
+            <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-shop"></i> ShopInk</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Trang Chủ</a></li>
@@ -54,119 +33,79 @@
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="#">Điện tử</a></li>
-                <li class="breadcrumb-item active">Tai nghe Sony WH-1000XM5</li>
+                <li class="breadcrumb-item active" id="breadcrumbActive">Đang tải...</li>
             </ol>
         </nav>
 
         <div class="row g-5">
             <div class="col-lg-6">
                 <div class="main-img-container shadow-sm mb-3 position-relative">
-                    <img id="mainImg" src="https://images.unsplash.com/photo-1618366712277-721219e99e62?w=800" class="img-main" alt="Product Image">
-                    <div class="product-badge">Hot</div>
+                    <img id="mainImg" src="https://placehold.co/600x600?text=Sản+Phẩm" class="img-main" alt="Product Image">
                 </div>
-                <div class="d-flex gap-2 justify-content-center">
-                    <img onclick="changeImg(this.src)" src="https://images.unsplash.com/photo-1618366712277-721219e99e62?w=200" class="thumb-item active">
-                    <img onclick="changeImg(this.src)" src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=200" class="thumb-item">
-                    <img onclick="changeImg(this.src)" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200" class="thumb-item">
-                </div>
+                <div class="d-flex gap-2 justify-content-center" id="thumbList"></div>
             </div>
 
             <div class="col-lg-6">
                 <div class="ps-lg-4">
-                    <h1 class="fw-bold mb-3">Tai nghe Sony WH-1000XM5 - Chống ồn đỉnh cao</h1>
+                    <h1 class="fw-bold mb-3" id="productTitle">Đang tải sản phẩm...</h1>
                     
                     <div class="product-rating mb-3">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i>
-                        <span class="text-muted ms-2">(245 Đánh giá) | 1.2k Đã bán</span>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <span id="ratingValue">5.0</span>
+                        <span class="text-muted ms-2" id="soldCount">| Đã bán 0</span>
                     </div>
 
                     <div class="mb-4 bg-light p-3 rounded">
-                        <span class="product-original-price">9.500.000đ</span>
-                        <span class="product-price ms-2">7.290.000đ</span>
-                        <span class="product-discount ms-2">-23%</span>
-                    </div>
-
-                    <div class="mb-4">
-                        <h6 class="fw-bold">Chọn màu sắc:</h6>
-                        <div class="btn-group mt-2" role="group">
-                            <input type="radio" class="btn-check" name="color" id="color1" autocomplete="off" checked>
-                            <label class="btn btn-outline-primary" for="color1">Đen Huyền Bí</label>
-                            
-                            <input type="radio" class="btn-check" name="color" id="color2" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="color2">Bạc Ánh Kim</label>
-                        </div>
+                        <span class="text-decoration-line-through text-muted" id="originalPrice"></span>
+                        <span class="fs-2 fw-bold text-danger ms-2" id="currentPrice">0đ</span>
+                        <span class="badge bg-danger ms-2" id="discountBadge"></span>
                     </div>
 
                     <div class="mb-4">
                         <h6 class="fw-bold">Số lượng:</h6>
                         <div class="input-group mt-2" style="width: 140px;">
-                            <button class="btn btn-outline-secondary" type="button" onclick="updateQty(-1)">-</button>
+                            <button class="btn btn-outline-secondary" onclick="updateQty(-1)">-</button>
                             <input type="text" class="form-control text-center" id="quantity" value="1">
-                            <button class="btn btn-outline-secondary" type="button" onclick="updateQty(1)">+</button>
+                            <button class="btn btn-outline-secondary" onclick="updateQty(1)">+</button>
                         </div>
                     </div>
 
                     <div class="product-actions d-flex gap-3 mb-5">
-                        <button class="btn btn-primary btn-lg flex-grow-1 py-3 shadow-sm">
-                            <i class="bi bi-cart-plus me-2"></i> THÊM VÀO GIỎ HÀNG
-                        </button>
-                        <button class="btn btn-secondary btn-lg px-4 py-3 shadow-sm">
-                            <i class="bi bi-heart"></i>
-                        </button>
+                        <button class="btn btn-primary btn-lg flex-grow-1 py-3" onclick="addToCart()">THÊM VÀO GIỎ</button>
                     </div>
 
                     <div class="card bg-white border-dashed p-3">
-                        <div class="small mb-2"><i class="bi bi-truck text-success me-2"></i>Miễn phí vận chuyển cho đơn hàng từ 500k</div>
-                        <div class="small"><i class="bi bi-shield-check text-success me-2"></i>Bảo hành chính hãng 12 tháng</div>
+                        <div class="small mb-2"><i class="bi bi-truck text-success me-2"></i>Giao hàng nhanh toàn quốc</div>
+                        <div class="small"><i class="bi bi-shield-check text-success me-2"></i>Bảo hành chính hãng từ Lazada</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-5 pt-5">
+        <div class="row mt-5">
             <div class="col-12">
-                <ul class="nav nav-tabs mb-4" id="detailTab" role="tablist">
+                <ul class="nav nav-tabs mb-4">
                     <li class="nav-item">
                         <button class="nav-link active fw-bold" data-bs-toggle="tab" data-bs-target="#desc-pane">Mô Tả Sản Phẩm</button>
                     </li>
-                    <li class="nav-item">
-                        <button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#review-pane">Đánh Giá (245)</button>
-                    </li>
                 </ul>
-                <div class="tab-content bg-white p-4 rounded shadow-sm">
+                <div class="tab-content bg-white p-4 rounded shadow-sm border">
                     <div class="tab-pane fade show active" id="desc-pane">
-                        <p>Tai nghe Sony WH-1000XM5 thiết lập các tiêu chuẩn mới cho trải nghiệm nghe không gián đoạn...</p>
-                        <ul>
-                            <li>Công nghệ chống ồn chủ động tốt nhất thế giới.</li>
-                            <li>Thời lượng pin lên đến 30 giờ.</li>
-                            <li>Hỗ trợ sạc nhanh: 3 phút sạc cho 3 giờ phát nhạc.</li>
-                        </ul>
-                    </div>
-                    <div class="tab-pane fade" id="review-pane">
-                        <div class="review-item">
-                            <div class="review-author">Hoàng Nam</div>
-                            <div class="product-rating small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
-                            <p class="review-text">Sản phẩm cực kỳ chất lượng, âm thanh quá tuyệt vời!</p>
-                            <div class="review-date">01/01/2026</div>
-                        </div>
+                        <p>Đang tải mô tả chi tiết...</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-dark text-white py-5">
+    <footer class="bg-dark text-white py-5 mt-5">
         <div class="container text-center">
             <p>&copy; 2026 ShopInk. Trải nghiệm mua sắm tốt nhất.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/detail.js"></script>
     <script>
         function changeImg(src) {
             document.getElementById('mainImg').src = src;
