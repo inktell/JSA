@@ -1,6 +1,6 @@
 // 1. Cấu hình
 const CONFIG = {
-    API_KEY: 'cfc266bb44mshf23a451ea830b9bp117a1ajsn66b83e4f597a',
+    API_KEY: '99adcc6dbemsh74b88da359692d8p13ac35jsn5de5b4faeea7',
     API_HOST: 'lazada-api.p.rapidapi.com',
     BASE_URL: 'https://lazada-api.p.rapidapi.com/lazada/search/items'
 };
